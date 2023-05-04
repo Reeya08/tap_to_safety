@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tap_to_safety/presentation/views/complaint/complaint_view.dart';
 import 'package:tap_to_safety/presentation/views/edit_contacts/edit_contacts_view.dart';
 import 'package:tap_to_safety/presentation/views/onboarding/onboarding_view.dart';
+import 'package:tap_to_safety/presentation/views/other_helpline/other_helpline_view.dart';
 import 'package:tap_to_safety/presentation/views/safety_tips/safety_tips_view.dart';
 import 'package:tap_to_safety/presentation/views/splash/splash_view.dart';
 import 'package:tap_to_safety/presentation/views/view_contacts/view_contacts_view.dart';
@@ -34,6 +36,8 @@ class MyApp extends StatelessWidget {
       // home: EditContactsView(),
       // home: SafetyTipsView(),
       // home: OnboardingView(),
+      // home: ComplaintView(),
+      //    home: OtherHelpline(),
     );
   }
 }

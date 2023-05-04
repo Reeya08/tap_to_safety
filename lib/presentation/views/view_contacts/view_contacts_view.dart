@@ -13,6 +13,14 @@ class ViewContactsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: Icon(
+          Icons.arrow_back,
+          color: AppConstants.primaryColor,
+        ),
+      ),
       backgroundColor: AppConstants.whiteBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
+import 'package:tap_to_safety/presentation/views/complaint/complaint_view.dart';
 import 'package:tap_to_safety/presentation/views/home/home_view.dart';
+import 'package:tap_to_safety/presentation/views/other_helpline/other_helpline_view.dart';
 import 'package:tap_to_safety/presentation/views/register_contacts/register_contacts_view.dart';
+import 'package:tap_to_safety/presentation/views/safety_tips/safety_tips_view.dart';
 import 'package:tap_to_safety/presentation/views/view_contacts/view_contacts_view.dart';
 
 class BottomNavigationView extends StatefulWidget {
@@ -17,6 +20,9 @@ class _BottomNavigationViewState extends State<BottomNavigationView> {
     HomeView(),
     RegisterContactView(),
     ViewContactsView(),
+    SafetyTipsView(),
+    ComplaintView(),
+    OtherHelpline(),
   ];
 
   @override
