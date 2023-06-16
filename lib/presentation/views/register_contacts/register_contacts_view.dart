@@ -1,8 +1,8 @@
-import 'dart:math';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tap_to_safety/infrasturcture/services/contacts_services.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../elements/custom_button.dart';
@@ -16,35 +16,27 @@ class RegisterContactsView extends StatefulWidget {
 }
 
 class _RegisterContactsViewState extends State<RegisterContactsView> {
-  final TextEditingController name_controller = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
 
-  final TextEditingController phone_controller = TextEditingController();
-  // List<Contact> contacts = [];
-  //
-  // bool isLoading = true;
-  //
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   getContactPermission();
-  // }
-  //
-  // void getContactPermission() async {
-  //   if (await Permission.contacts.isGranted) {
-  //     fetchContacts();
-  //   } else {
-  //     await Permission.contacts.request();
-  //   }
-  // }
-  //
-  // void fetchContacts() async {
-  //   contacts = await ContactsService.getContacts();
-  //
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
+  Future<void> getContactPermissionAndSave() async {
+    if (await Permission.contacts.isGranted) {
+      await saveContact();
+    } else {
+      var status = await Permission.contacts.request();
+      if (status.isGranted) {
+        await saveContact();
+      }
+    }
+  }
+
+  Future<void> saveContact() async {
+    var contact = Contact(
+      displayName: nameController.text,
+      phones: [Item(value: phoneController.text)],
+    );
+    await ContactServices().addContactToFirestore(contact);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,18 +59,20 @@ class _RegisterContactsViewState extends State<RegisterContactsView> {
             CustomTextField(
               textInputType: TextInputType.name,
               obscureText: false,
-              controller: name_controller,
+              controller: nameController,
               ImagePath: 'assets/images/name.png',
-              LabelText: 'Name', isPasswordField: false,
+              LabelText: 'Name',
+              isPasswordField: false,
             ),
             const SizedBox(
               height: 20,
             ),
             CustomTextField(
               textInputType: TextInputType.phone,
-              controller: phone_controller,
+              controller: phoneController,
               ImagePath: 'assets/images/phone.png',
-              LabelText: 'Phone', isPasswordField: false,
+              LabelText: 'Phone',
+              isPasswordField: false,
             ),
             const SizedBox(
               height: 100,
@@ -88,8 +82,7 @@ class _RegisterContactsViewState extends State<RegisterContactsView> {
               height: 60,
               width: 230,
               textSize: 20,
-              onPressed: () {
-                },
+              onPressed: () => getContactPermissionAndSave(),
             ),
           ],
         ),
