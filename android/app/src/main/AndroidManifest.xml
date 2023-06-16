@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tap_to_safety">
-   <application
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
+    <application
         android:label="tap_to_safety"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

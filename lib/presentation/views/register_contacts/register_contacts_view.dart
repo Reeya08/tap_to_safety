@@ -1,10 +1,50 @@
-import 'package:flutter/material.dart';
-import 'package:tap_to_safety/constants/app_constants.dart';
-import 'package:tap_to_safety/presentation/elements/custom_button.dart';
-import 'package:tap_to_safety/presentation/elements/custom_text_field.dart';
+import 'dart:math';
 
-class RegisterContactView extends StatelessWidget {
-  const RegisterContactView({Key? key}) : super(key: key);
+import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../../constants/app_constants.dart';
+import '../../elements/custom_button.dart';
+import '../../elements/custom_text_field.dart';
+
+class RegisterContactsView extends StatefulWidget {
+  RegisterContactsView({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterContactsView> createState() => _RegisterContactsViewState();
+}
+
+class _RegisterContactsViewState extends State<RegisterContactsView> {
+  final TextEditingController name_controller = TextEditingController();
+
+  final TextEditingController phone_controller = TextEditingController();
+  // List<Contact> contacts = [];
+  //
+  // bool isLoading = true;
+  //
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getContactPermission();
+  // }
+  //
+  // void getContactPermission() async {
+  //   if (await Permission.contacts.isGranted) {
+  //     fetchContacts();
+  //   } else {
+  //     await Permission.contacts.request();
+  //   }
+  // }
+  //
+  // void fetchContacts() async {
+  //   contacts = await ContactsService.getContacts();
+  //
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +57,28 @@ class RegisterContactView extends StatelessWidget {
               height: 30,
             ),
             Image.asset(
-              'assets/images/register-contact.png',
+              'assets/images/register_contacts.jpeg',
               height: 300,
               width: 300,
             ),
             const SizedBox(
               height: 60,
             ),
-            const CustomTextField(
+            CustomTextField(
+              textInputType: TextInputType.name,
+              obscureText: false,
+              controller: name_controller,
               ImagePath: 'assets/images/name.png',
-              LabelText: 'Name',
+              LabelText: 'Name', isPasswordField: false,
             ),
             const SizedBox(
               height: 20,
             ),
-            const CustomTextField(
+            CustomTextField(
+              textInputType: TextInputType.phone,
+              controller: phone_controller,
               ImagePath: 'assets/images/phone.png',
-              LabelText: 'Phone',
+              LabelText: 'Phone', isPasswordField: false,
             ),
             const SizedBox(
               height: 100,
@@ -43,7 +88,8 @@ class RegisterContactView extends StatelessWidget {
               height: 60,
               width: 230,
               textSize: 20,
-              onPressed: () {},
+              onPressed: () {
+                },
             ),
           ],
         ),

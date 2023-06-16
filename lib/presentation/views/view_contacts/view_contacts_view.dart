@@ -39,7 +39,7 @@ class ViewContactsView extends StatelessWidget {
                 children: [
                   GestureDetector(
                      onTap: (){
-                       NavigationHelper.push(const RegisterContactView(), context);
+                       NavigationHelper.push( RegisterContactsView(), context);
                      },
                       child: Image.asset('assets/images/add.png')),
                   const SizedBox(

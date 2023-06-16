@@ -25,7 +25,7 @@ class ComplaintView extends StatelessWidget {
             ),
             Center(
               child: Image.asset(
-                'assets/images/complaint.png',
+                'assets/images/edit_contact.jpeg',
                 height: 300,
                 width: 300,
               ),

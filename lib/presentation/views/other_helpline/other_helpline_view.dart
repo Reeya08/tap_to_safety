@@ -27,7 +27,7 @@ class OtherHelpline extends StatelessWidget {
             ),
             Center(
               child: Image.asset(
-                'assets/images/other-helpline-pic.png',
+                'assets/images/other_helpline.jpeg',
                 height: 300,
                 width: 300,
               ),

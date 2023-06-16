@@ -28,7 +28,7 @@ class SafetyTipsView extends StatelessWidget {
               ),
               Center(
                 child: Image.asset(
-                  'assets/images/safety-tips-pic.png',
+                  'assets/images/safety_tips.jpeg',
                   height: 200,
                   width: 300,
                 ),

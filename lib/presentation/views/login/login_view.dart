@@ -1,82 +1,163 @@
 import 'package:flutter/material.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
 import 'package:tap_to_safety/presentation/elements/custom_button.dart';
-import 'package:tap_to_safety/presentation/elements/custom_password_text_filed.dart';
 import 'package:tap_to_safety/presentation/elements/custom_text.dart';
 import 'package:tap_to_safety/presentation/elements/custom_text_field.dart';
+import 'package:tap_to_safety/presentation/views/bottom_navigation_bar/bottom_navigation_bar_view.dart';
+import 'package:tap_to_safety/presentation/views/forgot_password/forgot_password_view.dart';
 import 'package:tap_to_safety/presentation/views/reset_password/reset_password_view.dart';
 
 import '../../../helpers.dart';
-import '../bottom_navigation_bar/bottom_navigation_bar_view.dart';
+import '../../../infrasturcture/services/auth_services.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+  LoginView({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController email_controller = TextEditingController();
+  final TextEditingController password_controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConstants.whiteBackgroundColor,
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: Image.asset(
-              'assets/images/login.png',
-              height: 300,
-              width: 300,
-            ),
-          ),
-          const SizedBox(
-            height: 80,
-          ),
-          const CustomTextField(
-            ImagePath: 'assets/images/email.png',
-            LabelText: 'Email',
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const CustompPasswordTextField(
-            ImagePath: 'assets/images/password.png',
-            LabelText: 'Password',
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
             children: [
-              GestureDetector(
-                onTap: () {
-                  NavigationHelper.push(ResetPasswordView(), context);
-                },
-                child: CustomText(
-                  text: 'Forgot Password?',
-                  fontSize: 16,
-                  textColor: AppConstants.secondaryColor,
-                  textFontWeight: FontWeight.normal,
+              const SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: Image.asset(
+                  'assets/images/login.png',
+                  height: 300,
+                  width: 300,
                 ),
               ),
               const SizedBox(
-                width: 20,
+                height: 80,
+              ),
+              CustomTextField(
+                textInputType: TextInputType.emailAddress,
+                controller: email_controller,
+                ImagePath: 'assets/images/email.png',
+                LabelText: 'Email',
+                isPasswordField: false,
+                validator: (val) {
+                  if (val.isEmpty) {
+                    return 'Enter Email!';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomTextField(
+                textInputType: TextInputType.text,
+                isPasswordField: true,
+                ImagePath: 'assets/images/password.png',
+                LabelText: 'Password',
+                controller: password_controller,
+                validator: (val) {
+                  if (val.isEmpty) {
+                    return 'Enter Password!';
+                  } else if (val.length < 7) {
+                    return 'Password must above 6 characters';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      NavigationHelper.push(ForgotPasswordView(), context);
+                    },
+                    child: CustomText(
+                      text: 'Forgot Password?',
+                      fontSize: 16,
+                      textColor: AppConstants.secondaryColor,
+                      textFontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 80,
+              ),
+              CustomButton(
+                childText: 'Login',
+                height: 60,
+                width: 230,
+                textSize: 20,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    AuthServices()
+                        .loginUser(
+                            email: email_controller.text.toString(),
+                            password: password_controller.text.toString())
+                        .then((value) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            email_controller.clear();
+                            password_controller.clear();
+                            FocusManager.instance.primaryFocus!.unfocus();
+                            return AlertDialog(
+                              title: const Text("Message!"),
+                              content: const Text("Login successfully"),
+                              actions: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppConstants.primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigationView() ));
+                                    },
+                                    child: const Text("Okay"))
+                              ],
+                            );
+                          });
+                    }).onError((error, stackTrace) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            email_controller.clear();
+                            password_controller.clear();
+                            return AlertDialog(
+                              title: const Text("Alert!"),
+                              content: Text(error.toString()),
+                              actions: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppConstants.primaryColor,
+                                  ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Okay"))
+                              ],
+                            );
+                          });
+                    });
+                  }
+                  // NavigationHelper.push(BottomNavigationView(), context);
+                },
               ),
             ],
           ),
-          const SizedBox(
-            height: 80,
-          ),
-          CustomButton(
-            childText: 'Login',
-            height: 60,
-            width: 230,
-            textSize: 20,
-            onPressed: () {
-              NavigationHelper.push(BottomNavigationView(), context);
-            },
-          ),
-        ],
+        ),
       ),
     );
   }

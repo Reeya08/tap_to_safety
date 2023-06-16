@@ -7,7 +7,7 @@ import 'package:tap_to_safety/presentation/views/login/login_view.dart';
 import 'package:tap_to_safety/presentation/views/sign_up/sign_up_view.dart';
 
 import '../../../constants/app_constants.dart';
-import '../../../models/onboarding_model.dart';
+import '../../../infrasturcture/models/onboarding_model.dart';
 import '../../elements/custom_button.dart';
 import '../../elements/custom_onboarding.dart';
 
@@ -23,11 +23,11 @@ class _OnboardingViewState extends State<OnboardingView> {
   int index = 0;
   List<OnboardingModel> onboardingScreens = [
     OnboardingModel(
-      imagePath: 'assets/images/onboarding1 (1).png',
+      imagePath: 'assets/images/onboarding 1.jpeg',
       text: 'Wellcome to TapToSafety',
     ),
     OnboardingModel(
-      imagePath: 'assets/images/onboarding2.png',
+      imagePath: 'assets/images/onboarding 2.jpeg',
       text: 'Now women are safe!',
     ),
   ];
@@ -39,36 +39,36 @@ class _OnboardingViewState extends State<OnboardingView> {
       body: SafeArea(
         child: Column(
           children: [
-          Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            index == 0
-                ? const SizedBox(
-              height: 50,
-            )
-                : IconButton(
-                onPressed: () {
-                  _controller.previousPage(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeIn);
-                },
-                icon: const Icon(Icons.arrow_back)),
-            index == 3.0
-                ? const SizedBox(
-              height: 50,
-            )
-                : TextButton(
-              onPressed: () {
-                _controller.animateToPage(
-                    4,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn);
-              },
-              child: CustomText(text: 'Skip',
-                fontSize: 16,
-                textColor: AppConstants.blackTextColor,
-                textFontWeight: FontWeight.w500,),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                index == 0
+                    ? const SizedBox(
+                  height: 50,
+                )
+                    : IconButton(
+                    onPressed: () {
+                      _controller.previousPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn);
+                    },
+                    icon: const Icon(Icons.arrow_back)),
+                index == 3.0
+                    ? const SizedBox(
+                  height: 50,
+                )
+                    : TextButton(
+                  onPressed: () {
+                    _controller.animateToPage(
+                        4,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn);
+                  },
+                  child: CustomText(text: 'Skip',
+                    fontSize: 16,
+                    textColor: AppConstants.blackTextColor,
+                    textFontWeight: FontWeight.w500,),
+                ),
               ],
             ),
             Expanded(
@@ -93,7 +93,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       // SizedBox(height: 100,),
                       Center(
                           child: Image.asset(
-                            'assets/images/onboarding2.png',
+                            'assets/images/onboarding3 (1).png',
                             height: 300,
                             width: 300,
                           )),
@@ -129,7 +129,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 100,
                       ),
                       Center(
                         child: CustomButton(
@@ -141,26 +141,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                               NavigationHelper.push(SignUpView(), context);
                             }),
                       ),
-                      const SizedBox(
-                        height: 70,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AppConstants.google,
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          AppConstants.facebook,
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          AppConstants.instagram,
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      SizedBox(height: 20,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -181,7 +162,25 @@ class _OnboardingViewState extends State<OnboardingView> {
                                 textFontWeight: FontWeight.bold,
                               )),
                         ],
-                      )
+                      ),
+
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     AppConstants.google,
+                      //     const SizedBox(
+                      //       width: 20,
+                      //     ),
+                      //     AppConstants.facebook,
+                      //     const SizedBox(
+                      //       width: 20,
+                      //     ),
+                      //     AppConstants.instagram,
+                      //   ],
+                      // ),
+                      // const SizedBox(
+                      //   height: 30,
+                      // ),
                     ],
                   ),
                 ],

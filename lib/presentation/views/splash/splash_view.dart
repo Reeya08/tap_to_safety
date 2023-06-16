@@ -19,7 +19,7 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 5), () {
-      NavigationHelper.push(const OnboardingView(), context);
+      NavigationHelper.push( OnboardingView(), context);
     });
   }
 
@@ -30,7 +30,9 @@ class _SplashViewState extends State<SplashView> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(child: AppConstants.logoImage),
+          Center
+            (
+              child: AppConstants.logoImage),
           const CustomText(
             text: 'TapToSafety',
             fontSize: 26,

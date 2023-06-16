@@ -18,7 +18,7 @@ class _BottomNavigationViewState extends State<BottomNavigationView> {
   int _currentIndex = 0;
   final List<Widget> _allScreens = [
     HomeView(),
-    RegisterContactView(),
+    RegisterContactsView(),
     ViewContactsView(),
     SafetyTipsView(),
     ComplaintView(),
