@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
 import 'package:tap_to_safety/helpers.dart';
 import 'package:tap_to_safety/presentation/elements/custom_button.dart';
@@ -37,74 +38,60 @@ class ViewContactsView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                      onTap: () {
-                        NavigationHelper.push(RegisterContactsView(), context);
-                      },
-                      child: Image.asset('assets/images/add.png')),
+                    onTap: () {
+                      NavigationHelper.push(RegisterContactsView(), context);
+                    },
+                    child: Image.asset('assets/images/add.png'),
+                  ),
                   const SizedBox(
                     width: 30,
                   ),
                 ],
               ),
-              const ViewContactsTile(
-                  titleText: 'Reeya', subTitleText: '033343453221'),
-              const Divider(
-                color: AppConstants.primaryColor,
-                height: 5,
-                indent: 20,
-                endIndent: 20,
+              const SizedBox(height: 10),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('contacts').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final contacts = snapshot.data!.docs;
+                    return Column(
+                      children: contacts.map((contactDoc) {
+                        final contactData = contactDoc.data() as Map<String, dynamic>;
+                        final name = contactData['name'] ?? '';
+                        final phone = contactData['phone'] ?? '';
+                        return GestureDetector(
+                          onTap: () {
+                            NavigationHelper.push(
+                              EditContactsView(
+                                name: name,
+                                phone: phone,
+                                contactId: contactDoc.id,
+                              ),
+                              context,
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              ViewContactsTile(titleText: name, subTitleText: phone),
+                              const Divider(
+                                color: AppConstants.primaryColor,
+                                height: 5,
+                                indent: 20,
+                                endIndent: 20,
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
               ),
-              const ViewContactsTile(
-                  titleText: 'Vaneeza', subTitleText: '033343453221'),
-              const Divider(
-                color: AppConstants.primaryColor,
-                height: 5,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const ViewContactsTile(
-                  titleText: 'Iqra', subTitleText: '033343453221'),
-              const Divider(
-                color: AppConstants.primaryColor,
-                height: 5,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const ViewContactsTile(
-                  titleText: 'Alia', subTitleText: '033343453221'),
-              const Divider(
-                color: AppConstants.primaryColor,
-                height: 5,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const ViewContactsTile(
-                  titleText: 'Aina', subTitleText: '033343453221'),
-              const Divider(
-                color: AppConstants.primaryColor,
-                height: 5,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomButton(
-                      childText: 'Edit Contacts',
-                      height: 60,
-                      width: 150,
-                      textSize: 16,
-                      onPressed: () {
-                        NavigationHelper.push(EditContactsView(), context);
-                      }),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                ],
-              ),
+              const SizedBox(height: 10),
             ],
           ),
         ),

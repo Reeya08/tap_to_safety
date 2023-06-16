@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -7,6 +6,7 @@ import 'package:tap_to_safety/infrasturcture/services/contacts_services.dart';
 import '../../../constants/app_constants.dart';
 import '../../elements/custom_button.dart';
 import '../../elements/custom_text_field.dart';
+import '../bottom_navigation_bar/bottom_navigation_bar_view.dart';
 
 class RegisterContactsView extends StatefulWidget {
   RegisterContactsView({Key? key}) : super(key: key);
@@ -82,7 +82,54 @@ class _RegisterContactsViewState extends State<RegisterContactsView> {
               height: 60,
               width: 230,
               textSize: 20,
-              onPressed: () => getContactPermissionAndSave(),
+              onPressed: () => getContactPermissionAndSave().then((value) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      nameController.clear();
+                      phoneController.clear();
+                      FocusManager.instance.primaryFocus!.unfocus();
+                      return AlertDialog(
+                        title: const Text("Message!"),
+                        content: const Text("Contact Added successfully"),
+                        actions: [
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppConstants.primaryColor,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            BottomNavigationView()));
+                              },
+                              child: const Text("Okay"))
+                        ],
+                      );
+                    }).onError((error, stackTrace) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        nameController.clear();
+                        phoneController.clear();
+                        return AlertDialog(
+                          title: const Text("Alert!"),
+                          content: Text(error.toString()),
+                          actions: [
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppConstants.primaryColor,
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Okay"))
+                          ],
+                        );
+                      });
+                });
+              }),
             ),
           ],
         ),
