@@ -119,69 +119,71 @@ class _OnboardingViewState extends State<OnboardingView> {
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      Center(
-                        child: Image.asset(
-                          'assets/images/onboarding4 (1).png',
-                          height: 300,
-                          width: 300,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 100,
-                      ),
-                      Center(
-                        child: CustomButton(
-                            childText: 'Sign Up',
-                            height: 60,
-                            width: 230,
-                            textSize: 20,
-                            onPressed: () {
-                              NavigationHelper.push(SignUpView(), context);
-                            }),
-                      ),
-                      SizedBox(height: 20,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CustomText(
-                            text: 'Already have an account? ',
-                            fontSize: 16,
-                            textColor: AppConstants.blackTextColor,
-                            textFontWeight: FontWeight.w500,
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            'assets/images/onboarding4 (1).png',
+                            height: 300,
+                            width: 300,
                           ),
-                          GestureDetector(
-                              onTap: () {
-                                NavigationHelper.push(LoginView(), context);
-                              },
-                              child: CustomText(
-                                text: 'Login',
-                                fontSize: 16,
-                                textColor: AppConstants.secondaryColor,
-                                textFontWeight: FontWeight.bold,
-                              )),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 100,
+                        ),
+                        Center(
+                          child: CustomButton(
+                              childText: 'Sign Up',
+                              height: 60,
+                              width: 230,
+                              textSize: 20,
+                              onPressed: () {
+                                NavigationHelper.push(SignUpView(), context);
+                              }),
+                        ),
+                        SizedBox(height: 20,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomText(
+                              text: 'Already have an account? ',
+                              fontSize: 16,
+                              textColor: AppConstants.blackTextColor,
+                              textFontWeight: FontWeight.w500,
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  NavigationHelper.push(LoginView(), context);
+                                },
+                                child: CustomText(
+                                  text: 'Login',
+                                  fontSize: 16,
+                                  textColor: AppConstants.secondaryColor,
+                                  textFontWeight: FontWeight.bold,
+                                )),
+                          ],
+                        ),
 
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     AppConstants.google,
-                      //     const SizedBox(
-                      //       width: 20,
-                      //     ),
-                      //     AppConstants.facebook,
-                      //     const SizedBox(
-                      //       width: 20,
-                      //     ),
-                      //     AppConstants.instagram,
-                      //   ],
-                      // ),
-                      // const SizedBox(
-                      //   height: 30,
-                      // ),
-                    ],
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     AppConstants.google,
+                        //     const SizedBox(
+                        //       width: 20,
+                        //     ),
+                        //     AppConstants.facebook,
+                        //     const SizedBox(
+                        //       width: 20,
+                        //     ),
+                        //     AppConstants.instagram,
+                        //   ],
+                        // ),
+                        // const SizedBox(
+                        //   height: 30,
+                        // ),
+                      ],
+                    ),
                   ),
                 ],
               ),

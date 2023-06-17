@@ -16,6 +16,9 @@ class ContactServices{
       print('Error adding contact to Firestore: $e');
     }
   }
-
+  // Future addUser(ContactModel model) async {
+  //   await FirebaseFirestore.instance.collection('users')
+  //       .add(model.toJson());
+  // }
 
 }

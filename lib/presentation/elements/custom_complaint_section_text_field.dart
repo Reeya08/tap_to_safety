@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
-
 import '../../constants/app_constants.dart';
+
 class CustomComplaintSectionTextField extends StatelessWidget {
   const CustomComplaintSectionTextField({
-  super.key,
-  required this.hintText,
-   required this.height,
-   required this.width,
-  });
-final String hintText;
-final double height;
-final double width;
+    Key? key,
+    required this.hintText,
+    required this.height,
+    required this.width,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final String hintText;
+  final double height;
+  final double width;
+  final ValueChanged<String> onChanged;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: height,
       width: width,
       child: TextFormField(
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
@@ -25,7 +30,6 @@ final double width;
             fontWeight: FontWeight.normal,
           ),
           enabledBorder: OutlineInputBorder(
-            // borderRadius: BorderRadius.circular(20.0),
             borderSide: BorderSide(
               color: AppConstants.secondaryColor,
               width: 1,

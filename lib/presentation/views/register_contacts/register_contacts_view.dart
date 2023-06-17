@@ -19,6 +19,9 @@ class _RegisterContactsViewState extends State<RegisterContactsView> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
+
+
+
   Future<void> getContactPermissionAndSave() async {
     if (await Permission.contacts.isGranted) {
       await saveContact();
