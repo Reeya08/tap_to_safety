@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
 
+import '../../../helpers.dart';
 import '../../elements/custom_text.dart';
+import '../bottom_navigation_bar/bottom_navigation_bar_view.dart';
 
 class SafetyTipsView extends StatelessWidget {
   const SafetyTipsView({Key? key}) : super(key: key);
@@ -12,15 +14,20 @@ class SafetyTipsView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        leading: Icon(
-          Icons.arrow_back,
-          color: AppConstants.primaryColor,
+        leading:  GestureDetector(
+          onTap: (){
+            NavigationHelper.push(const BottomNavigationView(), context);
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: AppConstants.primaryColor,
+          ),
         ),
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding:  const EdgeInsets.all(20.0),
           child: Column(
             children: [
               const SizedBox(
@@ -62,10 +69,10 @@ class SafetyTipsView extends StatelessWidget {
                 textColor: AppConstants.blackTextColor,
                 textFontWeight: FontWeight.normal,
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const CustomText(
+                  CustomText(
                     text: '3 :  Light the way',
                     fontSize: 22,
                     textColor: AppConstants.primaryColor,

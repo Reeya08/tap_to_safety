@@ -11,23 +11,23 @@ String complaintModelToJson(ComplaintModel data) => json.encode(data.toJson());
 class ComplaintModel {
   String? name;
   String? complaint;
-  String? timestamp;
+  DateTime? date;
 
   ComplaintModel({
     this.name,
     this.complaint,
-    this.timestamp,
+    this.date,
   });
 
   factory ComplaintModel.fromJson(Map<String, dynamic> json) => ComplaintModel(
     name: json["name"],
     complaint: json["complaint"],
-    timestamp: json["timestamp"],
+    date: json["date"],
   );
 
   Map<String, dynamic> toJson() => {
     "name": name,
     "complaint": complaint,
-    "timestamp": timestamp,
+    "date": date,
   };
 }

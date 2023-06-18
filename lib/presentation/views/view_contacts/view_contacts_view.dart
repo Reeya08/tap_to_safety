@@ -1,24 +1,35 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
 import 'package:tap_to_safety/helpers.dart';
-import 'package:tap_to_safety/presentation/elements/custom_button.dart';
 import 'package:tap_to_safety/presentation/elements/view_contacts_tile.dart';
 import 'package:tap_to_safety/presentation/views/edit_contacts/edit_contacts_view.dart';
 import 'package:tap_to_safety/presentation/views/register_contacts/register_contacts_view.dart';
 
-class ViewContactsView extends StatelessWidget {
-  const ViewContactsView({Key? key}) : super(key: key);
+import '../bottom_navigation_bar/bottom_navigation_bar_view.dart';
 
+class ViewContactsView extends StatefulWidget {
+  ViewContactsView({Key? key}) : super(key: key);
+
+  @override
+  State<ViewContactsView> createState() => _ViewContactsViewState();
+}
+
+class _ViewContactsViewState extends State<ViewContactsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        leading: Icon(
-          Icons.arrow_back,
-          color: AppConstants.primaryColor,
+        leading: GestureDetector(
+          onTap: (){
+            NavigationHelper.push(const BottomNavigationView(), context);
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: AppConstants.primaryColor,
+          ),
         ),
       ),
       backgroundColor: AppConstants.whiteBackgroundColor,
@@ -50,13 +61,16 @@ class ViewContactsView extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('contacts').snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection('contacts')
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final contacts = snapshot.data!.docs;
                     return Column(
                       children: contacts.map((contactDoc) {
-                        final contactData = contactDoc.data() as Map<String, dynamic>;
+                        final contactData =
+                            contactDoc.data() as Map<String, dynamic>;
                         final name = contactData['name'] ?? '';
                         final phone = contactData['phone'] ?? '';
                         return GestureDetector(
@@ -72,7 +86,8 @@ class ViewContactsView extends StatelessWidget {
                           },
                           child: Column(
                             children: [
-                              ViewContactsTile(titleText: name, subTitleText: phone),
+                              ViewContactsTile(
+                                  titleText: name, subTitleText: phone),
                               const Divider(
                                 color: AppConstants.primaryColor,
                                 height: 5,

@@ -6,7 +6,7 @@ import 'package:tap_to_safety/presentation/elements/custom_button.dart';
 import 'package:tap_to_safety/presentation/elements/custom_text_field.dart';
 import 'package:tap_to_safety/presentation/views/view_contacts/view_contacts_view.dart';
 
-class EditContactsView extends StatelessWidget {
+class EditContactsView extends StatefulWidget {
   final String name;
   final String phone;
   final String contactId;
@@ -18,13 +18,20 @@ class EditContactsView extends StatelessWidget {
     required this.contactId,
   }) : super(key: key);
 
+  @override
+  State<EditContactsView> createState() => _EditContactsViewState();
+}
+
+class _EditContactsViewState extends State<EditContactsView> {
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController phoneController = TextEditingController();
 
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    nameController.text = name;
-    phoneController.text = phone;
+    nameController.text = widget.name;
+    phoneController.text = widget.phone;
 
     return Scaffold(
       backgroundColor: AppConstants.whiteBackgroundColor,
@@ -61,7 +68,7 @@ class EditContactsView extends StatelessWidget {
               controller: phoneController,
               isPasswordField: false,
             ),
-            const SizedBox(
+             const SizedBox(
               height: 120,
             ),
             CustomButton(
@@ -79,12 +86,26 @@ class EditContactsView extends StatelessWidget {
     );
   }
 
+  setLoadingFalse(){
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  setLoadingTrue(){
+    setState(() {
+      isLoading = true;
+    });
+  }
+
   void saveEditedContact(BuildContext context) {
     // Update the contact in Firestore using the contactId
-    FirebaseFirestore.instance.collection('contacts').doc(contactId).update({
+    setLoadingTrue();
+    FirebaseFirestore.instance.collection('contacts').doc(widget.contactId).update({
       'name': nameController.text,
       'phone': phoneController.text,
     }).then((value) {
+      setLoadingFalse();
       // Navigate back to ViewContactsView after successful update
       Navigator.pop(context);
     }).catchError((error) {

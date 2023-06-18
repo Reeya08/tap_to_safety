@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tap_to_safety/helpers.dart';
 import 'package:tap_to_safety/presentation/elements/custom_other_helpline_tile.dart';
 import 'package:tap_to_safety/presentation/elements/custom_text.dart';
+import 'package:tap_to_safety/presentation/views/bottom_navigation_bar/bottom_navigation_bar_view.dart';
 
 import '../../../constants/app_constants.dart';
 
@@ -13,16 +15,21 @@ class OtherHelpline extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        leading: Icon(
-          Icons.arrow_back,
-          color: AppConstants.primaryColor,
+        leading:GestureDetector(
+          onTap: (){
+            NavigationHelper.push(const BottomNavigationView(), context);
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: AppConstants.primaryColor,
+          ),
         ),
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Center(
@@ -32,11 +39,11 @@ class OtherHelpline extends StatelessWidget {
                 width: 300,
               ),
             ),
-            CustomOtherHelplineTile(title: 'Rescue Helpline', subTitle: '1122'),
-            CustomOtherHelplineTile(title: 'Edhi Ambulance Helpline', subTitle: '115'),
-            CustomOtherHelplineTile(title: 'Rangers Helpline', subTitle: '1101'),
-            CustomOtherHelplineTile(title: 'Police Madadgar Helpline', subTitle: '15'),
-            CustomOtherHelplineTile(title: 'Fire Brigade Helpline', subTitle: '16'),
+            const CustomOtherHelplineTile(title: 'Rescue Helpline', subTitle: '1122'),
+            const CustomOtherHelplineTile(title: 'Edhi Ambulance Helpline', subTitle: '115'),
+            const CustomOtherHelplineTile(title: 'Rangers Helpline', subTitle: '1101'),
+            const CustomOtherHelplineTile(title: 'Police Madadgar Helpline', subTitle: '15'),
+            const CustomOtherHelplineTile(title: 'Fire Brigade Helpline', subTitle: '16'),
 
           ],
         ),

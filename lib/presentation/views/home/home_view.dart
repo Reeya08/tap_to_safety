@@ -12,7 +12,7 @@ class HomeView extends StatelessWidget {
           onTap: (){
 
           },
-          child: CircleAvatar(
+          child: const CircleAvatar(
             radius: 70,
             backgroundColor: AppConstants.primaryColor,
             child: Text(

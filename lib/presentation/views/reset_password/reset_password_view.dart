@@ -62,7 +62,7 @@ class ResetPasswordView extends StatelessWidget {
                 }
               },
             ),
-            const SizedBox(
+             const SizedBox(
               height: 120,
             ),
             CustomButton(
@@ -71,7 +71,7 @@ class ResetPasswordView extends StatelessWidget {
               width: 230,
               textSize: 20,
               onPressed: () {
-                NavigationHelper.push(BottomNavigationView(), context);
+                NavigationHelper.push(const BottomNavigationView(), context);
 
               },
             ),

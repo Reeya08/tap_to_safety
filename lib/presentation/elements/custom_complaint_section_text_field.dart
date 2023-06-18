@@ -1,29 +1,37 @@
 import 'package:flutter/material.dart';
 import '../../constants/app_constants.dart';
 
-class CustomComplaintSectionTextField extends StatelessWidget {
+class CustomComplaintSectionTextField extends StatefulWidget {
   const CustomComplaintSectionTextField({
     Key? key,
     required this.hintText,
     required this.height,
     required this.width,
-    required this.onChanged,
+    required this.controller,
+    this.validator,
   }) : super(key: key);
 
   final String hintText;
   final double height;
   final double width;
-  final ValueChanged<String> onChanged;
+  final TextEditingController controller;
+  final Function(String)? validator;
 
+  @override
+  State<CustomComplaintSectionTextField> createState() => _CustomComplaintSectionTextFieldState();
+}
+
+class _CustomComplaintSectionTextFieldState extends State<CustomComplaintSectionTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height,
-      width: width,
+      height: widget.height,
+      width: widget.width,
       child: TextFormField(
-        onChanged: onChanged,
+        controller: widget.controller,
+        validator: (val) => widget.validator!(val!),
         decoration: InputDecoration(
-          hintText: hintText,
+          hintText: widget.hintText,
           hintStyle: TextStyle(
             fontSize: 12,
             color: AppConstants.secondaryColor,
