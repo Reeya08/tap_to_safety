@@ -12,7 +12,7 @@ class CustomTextField extends StatefulWidget {
     this.isPasswordField = false,
     required this.LabelText,
     this.isObscure = false,
-  required this.textInputType,
+    required this.textInputType,
   });
 
   final bool obscureText;
@@ -29,50 +29,59 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  // final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        // obscureText: widget.obscureText?? false,
         obscureText: widget.isPasswordField! ? widget.isObscure! : false,
         controller: widget.controller,
         validator: (val) => widget.validator!(val!),
         decoration: InputDecoration(
-            icon: Image.asset(widget.ImagePath),
-            hintText: widget.LabelText,
-            hintStyle: TextStyle(
-              fontSize: 12,
+          icon: Image.asset(
+            widget.ImagePath,
+            width: 40,
+            height: 40,
+          ),
+          hintText: widget.LabelText,
+          hintStyle: TextStyle(
+            fontSize: 12,
+            color: AppConstants.secondaryColor,
+            fontWeight: FontWeight.normal,
+          ),
+          enabledBorder: OutlineInputBorder(
+            // borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide(
               color: AppConstants.secondaryColor,
-              fontWeight: FontWeight.normal,
+              width: 1,
             ),
-            enabledBorder: OutlineInputBorder(
-              // borderRadius: BorderRadius.circular(20.0),
-              borderSide: BorderSide(
-                color: AppConstants.secondaryColor,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppConstants.secondaryColor,
+              width: 1,
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppConstants.secondaryColor,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
           suffixIcon: widget.isPasswordField!
               ? GestureDetector(
-            onTap: () {
-              widget.isObscure = !widget.isObscure!;
-              setState(() {});
-            },
-            child: widget.isObscure ?? false
-                ? Icon(Icons.visibility_off , color: Colors.black,)
-                : Icon(Icons.visibility_outlined,color: Colors.black,),
-          )
-              : null,),
+                  onTap: () {
+                    widget.isObscure = !widget.isObscure!;
+                    setState(() {});
+                  },
+                  child: widget.isObscure ?? false
+                      ? Icon(
+                          Icons.visibility_off,
+                          color: Colors.black,
+                        )
+                      : Icon(
+                          Icons.visibility_outlined,
+                          color: Colors.black,
+                        ),
+                )
+              : null,
+        ),
       ),
     );
   }
