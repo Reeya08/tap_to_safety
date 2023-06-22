@@ -4,6 +4,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tap_to_safety/helpers.dart';
 import 'package:tap_to_safety/infrasturcture/services/contacts_services.dart';
+import 'package:tap_to_safety/presentation/elements/custom_dialog.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../elements/custom_button.dart';
@@ -52,7 +53,7 @@ class _RegisterContactsViewState extends State<RegisterContactsView> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           leading: GestureDetector(
-            onTap: (){
+            onTap: () {
               NavigationHelper.push(const BottomNavigationView(), context);
             },
             child: const Icon(
@@ -112,46 +113,18 @@ class _RegisterContactsViewState extends State<RegisterContactsView> {
                             nameController.clear();
                             phoneController.clear();
                             FocusManager.instance.primaryFocus!.unfocus();
-                            return AlertDialog(
-                              title: const Text("Message!"),
-                              content: const Text("Contact Added successfully"),
-                              actions: [
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          AppConstants.primaryColor,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const BottomNavigationView()));
-                                    },
-                                    child: const Text("Okay"))
-                              ],
-                            );
+                            return CustomDialog(
+                                messageContent: 'Contact Added Successfully!',
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                });
                           }).onError((error, stackTrace) {
                         showDialog(
                             context: context,
                             builder: (context) {
                               nameController.clear();
                               phoneController.clear();
-                              return AlertDialog(
-                                title: const Text("Alert!"),
-                                content: Text(error.toString()),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            AppConstants.primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Okay"))
-                                ],
-                              );
+                              return CustomDialog(messageContent: error.toString(), onPressed: (){ Navigator.pop(context);});
                             });
                       });
                     });

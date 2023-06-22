@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
 import 'package:tap_to_safety/helpers.dart';
 import 'package:tap_to_safety/presentation/elements/custom_text.dart';
+import 'package:tap_to_safety/presentation/views/bottom_navigation_bar/bottom_navigation_bar_view.dart';
+import 'package:tap_to_safety/presentation/views/edit_contacts/edit_contacts_view.dart';
+import 'package:tap_to_safety/presentation/views/sign_up/sign_up_view.dart';
 
 import '../onboarding/onboarding_view.dart';
 
@@ -19,8 +23,13 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 5), () {
-      NavigationHelper.push( OnboardingView(), context);
-    });
+      if(FirebaseAuth.instance.currentUser != null){
+        NavigationHelper.push(BottomNavigationView(), context);
+      }
+      else{
+        NavigationHelper.push(OnboardingView(), context);
+      }
+       });
   }
 
   @override

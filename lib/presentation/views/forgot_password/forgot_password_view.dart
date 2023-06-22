@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
 import 'package:tap_to_safety/presentation/elements/custom_button.dart';
+import 'package:tap_to_safety/presentation/elements/custom_dialog.dart';
 import 'package:tap_to_safety/presentation/elements/custom_text_field.dart';
 
 import '../../../infrasturcture/services/auth_services.dart';
@@ -78,36 +79,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                             builder: (context) {
                               emailController.clear();
                               FocusManager.instance.primaryFocus!.unfocus();
-                              return AlertDialog(
-                                title: const Text("Message!"),
-                                content: const Text("Check Your Email"),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppConstants.primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Okay"))
-                                ],
-                              );
+                              return CustomDialog(messageContent: 'Check Your Email!', onPressed: (){ Navigator.pop(context);});
                             });
                       }).onError((error, stackTrace) {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return AlertDialog(
-                                title: const Text("Alert!"),
-                                content: Text(error.toString()),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Okay"))
-                                ],
-                              );
+                              return CustomDialog(messageContent: error.toString(), onPressed: (){ Navigator.pop(context);});
                             });
                       });
                     }

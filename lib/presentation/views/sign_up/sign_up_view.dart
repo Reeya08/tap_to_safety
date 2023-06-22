@@ -4,6 +4,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
 import 'package:tap_to_safety/helpers.dart';
 import 'package:tap_to_safety/presentation/elements/custom_button.dart';
+import 'package:tap_to_safety/presentation/elements/custom_dialog.dart';
 import '../../../infrasturcture/models/user_model.dart';
 import '../../../infrasturcture/services/auth_services.dart';
 import '../../../infrasturcture/services/user_services.dart';
@@ -182,20 +183,9 @@ class _SignUpViewState extends State<SignUpView> {
                               passwordController.clear();
                               confirmPasswordController.clear();
                               FocusManager.instance.primaryFocus!.unfocus();
-                              return AlertDialog(
-                                title: const Text("Message!"),
-                                content:  const Text("SignUp successfully"),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppConstants.primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        NavigationHelper.push(BottomNavigationView(), context);
-                                      },
-                                      child: const Text("Okay"))
-                                ],
-                              );
+                              return CustomDialog(messageContent: 'Sign Up Successfully!', onPressed: (){
+                               NavigationHelper.push(BottomNavigationView(), context);
+                              });
                             });
                       }).onError((error, stackTrace) {
                         showDialog(
@@ -206,20 +196,9 @@ class _SignUpViewState extends State<SignUpView> {
                               phoneController.clear();
                               passwordController.clear();
                               confirmPasswordController.clear();
-                              return AlertDialog(
-                                title: const Text("Alert!"),
-                                content: Text(error.toString()),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppConstants.primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Okay"))
-                                ],
-                              );
+                              return CustomDialog(messageContent: error.toString(), onPressed: (){
+                                Navigator.pop(context);
+                              });
                             });
                       });
                     }

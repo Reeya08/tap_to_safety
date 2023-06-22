@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -7,6 +9,7 @@ import 'package:tap_to_safety/infrasturcture/models/complaint_model.dart';
 import 'package:tap_to_safety/infrasturcture/services/complaint_services.dart';
 import 'package:tap_to_safety/presentation/elements/custom_button.dart';
 import 'package:tap_to_safety/presentation/elements/custom_complaint_section_text_field.dart';
+import 'package:tap_to_safety/presentation/elements/custom_dialog.dart';
 import 'package:tap_to_safety/presentation/views/bottom_navigation_bar/bottom_navigation_bar_view.dart';
 
 class ComplaintView extends StatefulWidget {
@@ -112,42 +115,15 @@ class _ComplaintViewState extends State<ComplaintView> {
                             context: context,
                             builder: (context) {
                               FocusManager.instance.primaryFocus!.unfocus();
-                              return AlertDialog(
-                                title: const Text("Message!"),
-                                content:
-                                const Text("Complaint Submitted successfully"),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppConstants
-                                            .primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Okay"))
-                                ],
-                              );
+                              return CustomDialog(messageContent: 'Complaint Submitted Succesfully', onPressed: (){
+                                Navigator.pop(context);
+                              });
                             });
                       }).onError((error, stackTrace) {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return AlertDialog(
-                                title: const Text("Alert!"),
-                                content: Text(error.toString()),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppConstants
-                                            .primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Okay"))
-                                ],
-                              );
+                              return CustomDialog(messageContent: error.toString(), onPressed: (){ Navigator.pop(context);});
                             });
                       });
                     }

@@ -9,6 +9,7 @@ import 'package:tap_to_safety/presentation/views/forgot_password/forgot_password
 
 import '../../../helpers.dart';
 import '../../../infrasturcture/services/auth_services.dart';
+import '../../elements/custom_dialog.dart';
 
 class LoginView extends StatefulWidget {
   LoginView({Key? key}) : super(key: key);
@@ -129,25 +130,9 @@ class _LoginViewState extends State<LoginView> {
                               emailController.clear();
                               passwordController.clear();
                               FocusManager.instance.primaryFocus!.unfocus();
-                              return AlertDialog(
-                                title: const Text("Message!"),
-                                content: const Text("Login successfully"),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            AppConstants.primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const BottomNavigationView()));
-                                      },
-                                      child: const Text("Okay",style: TextStyle(color: Colors.white),))
-                                ],
-                              );
+                              return CustomDialog(messageContent: 'Login Successfully', onPressed: () {
+                                NavigationHelper.push(BottomNavigationView(), context);
+                              },);
                             });
                       }).onError((error, stackTrace) {
                         showDialog(
@@ -155,21 +140,9 @@ class _LoginViewState extends State<LoginView> {
                             builder: (context) {
                               emailController.clear();
                               passwordController.clear();
-                              return AlertDialog(
-                                title: const Text("Alert!"),
-                                content: Text(error.toString()),
-                                actions: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            AppConstants.primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Okay"))
-                                ],
-                              );
+                              return CustomDialog(messageContent: error.toString(), onPressed: (){
+                                Navigator.pop(context);
+                              });
                             });
                       });
                     }
@@ -196,3 +169,5 @@ class _LoginViewState extends State<LoginView> {
     });
   }
 }
+
+
