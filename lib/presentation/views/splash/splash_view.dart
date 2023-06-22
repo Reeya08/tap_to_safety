@@ -30,8 +30,7 @@ class _SplashViewState extends State<SplashView> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center
-            (
+          Center(
               child: AppConstants.logoImage),
           const CustomText(
             text: 'TapToSafety',

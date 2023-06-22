@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tap_to_safety/constants/app_constants.dart';
 import 'package:tap_to_safety/presentation/views/splash/splash_view.dart';
 import 'firebase_options.dart';
 void main() async {
@@ -14,6 +15,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        useMaterial3:  true,
+        colorSchemeSeed: AppConstants.primaryColor,
+      ),
       debugShowCheckedModeBanner: false,
       home: SplashView(),
     );

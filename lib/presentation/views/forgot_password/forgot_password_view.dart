@@ -16,7 +16,7 @@ class ForgotPasswordView extends StatefulWidget {
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController email_controller = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   bool isLoading = false;
 
@@ -47,7 +47,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                    textInputType: TextInputType.emailAddress,
                   ImagePath: 'assets/images/email.png',
                   LabelText: 'Enter Email',
-                   controller: email_controller,
+                   controller: emailController,
                    isPasswordField: false,
                    validator: (val) {
                      if (val.isEmpty) {
@@ -70,13 +70,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       setLoadingTrue();
                       AuthServices()
                           .sendPasswordResetEmail(
-                          email: email_controller.text)
+                          email: emailController.text)
                           .then((value) {
                             setLoadingFalse();
                         showDialog(
                             context: context,
                             builder: (context) {
-                              email_controller.clear();
+                              emailController.clear();
                               FocusManager.instance.primaryFocus!.unfocus();
                               return AlertDialog(
                                 title: const Text("Message!"),

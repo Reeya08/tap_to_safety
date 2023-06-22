@@ -20,9 +20,9 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController email_controller = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
-  final TextEditingController password_controller = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
 
@@ -53,7 +53,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 CustomTextField(
                   textInputType: TextInputType.emailAddress,
-                  controller: email_controller,
+                  controller: emailController,
                   ImagePath: 'assets/images/email.png',
                   LabelText: 'Email',
                   isPasswordField: false,
@@ -73,7 +73,7 @@ class _LoginViewState extends State<LoginView> {
                   isPasswordField: true,
                   ImagePath: 'assets/images/password.png',
                   LabelText: 'Password',
-                  controller: password_controller,
+                  controller: passwordController,
                   validator: (val) {
                     if (val.isEmpty) {
                       return 'Enter Password!';
@@ -119,15 +119,15 @@ class _LoginViewState extends State<LoginView> {
                       setLoadingTrue();
                       AuthServices()
                           .loginUser(
-                              email: email_controller.text.toString(),
-                              password: password_controller.text.toString())
+                              email: emailController.text.toString(),
+                              password: passwordController.text.toString())
                           .then((value) {
                         setLoadingFalse();
                         showDialog(
                             context: context,
                             builder: (context) {
-                              email_controller.clear();
-                              password_controller.clear();
+                              emailController.clear();
+                              passwordController.clear();
                               FocusManager.instance.primaryFocus!.unfocus();
                               return AlertDialog(
                                 title: const Text("Message!"),
@@ -145,7 +145,7 @@ class _LoginViewState extends State<LoginView> {
                                                 builder: (context) =>
                                                     const BottomNavigationView()));
                                       },
-                                      child: const Text("Okay"))
+                                      child: const Text("Okay",style: TextStyle(color: Colors.white),))
                                 ],
                               );
                             });
@@ -153,8 +153,8 @@ class _LoginViewState extends State<LoginView> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              email_controller.clear();
-                              password_controller.clear();
+                              emailController.clear();
+                              passwordController.clear();
                               return AlertDialog(
                                 title: const Text("Alert!"),
                                 content: Text(error.toString()),

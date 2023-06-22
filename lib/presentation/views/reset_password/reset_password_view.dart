@@ -7,9 +7,9 @@ import 'package:tap_to_safety/presentation/views/bottom_navigation_bar/bottom_na
 
 class ResetPasswordView extends StatelessWidget {
   ResetPasswordView({Key? key}) : super(key: key);
-  final TextEditingController password_controller = TextEditingController();
-  final TextEditingController new_password_controller = TextEditingController();
-  final TextEditingController confirm_new_password_controller =
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmNewPasswordController =
       TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -33,7 +33,7 @@ class ResetPasswordView extends StatelessWidget {
             ),
             CustomTextField(
               isPasswordField: true,
-              controller: new_password_controller,
+              controller: newPasswordController,
               ImagePath: 'assets/images/password.png',
               LabelText: 'New Password',
               textInputType: TextInputType.text,
@@ -51,11 +51,11 @@ class ResetPasswordView extends StatelessWidget {
             CustomTextField(
               isPasswordField: true,
               textInputType: TextInputType.text,
-              controller: confirm_new_password_controller,
+              controller: confirmNewPasswordController,
               ImagePath: 'assets/images/password.png',
               LabelText: 'Confirm New Password',
               validator: (val) {
-                if (val == new_password_controller) {
+                if (val == newPasswordController) {
                   return "Password Updated!";
                 } else {
                   return null;

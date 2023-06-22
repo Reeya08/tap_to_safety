@@ -1,16 +1,15 @@
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tap_to_safety/helpers.dart';
-import 'package:tap_to_safety/presentation/elements/custom_permission_dialauge.dart';
-import 'package:tap_to_safety/presentation/elements/custom_text.dart';
-import 'package:tap_to_safety/presentation/views/login/login_view.dart';
-import 'package:tap_to_safety/presentation/views/sign_up/sign_up_view.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 
 import '../../../constants/app_constants.dart';
 import '../../../infrasturcture/models/onboarding_model.dart';
 import '../../elements/custom_button.dart';
 import '../../elements/custom_onboarding.dart';
+import '../../elements/custom_text.dart';
+import '../../views/login/login_view.dart';
+import '../../views/sign_up/sign_up_view.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({Key? key}) : super(key: key);
@@ -25,13 +24,14 @@ class _OnboardingViewState extends State<OnboardingView> {
   List<OnboardingModel> onboardingScreens = [
     OnboardingModel(
       imagePath: 'assets/images/onboarding 1.jpeg',
-      text: 'Wellcome to TapToSafety',
+      text: 'Welcome to TapToSafety',
     ),
     OnboardingModel(
       imagePath: 'assets/images/onboarding 2.jpeg',
       text: 'Now women are safe!',
     ),
   ];
+
   Future<bool> _showExitConfirmationDialog() async {
     final result = await showDialog<bool>(
       context: context,
@@ -64,8 +64,70 @@ class _OnboardingViewState extends State<OnboardingView> {
     }
   }
 
+  Future<void> _requestLocationPermission() async {
+    final PermissionStatus status = await Permission.location.request();
 
-
+    if (status.isGranted) {
+      _controller.animateToPage(
+        4,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeIn,
+      );
+    } else if (status.isDenied) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Permission Denied'),
+            content: const Text(
+              'Please grant location permission to continue.',
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else if (status.isPermanentlyDenied) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Permission Denied'),
+            content: const Text(
+              'Please enable location access in the app settings to continue.',
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Open Settings'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  openAppSettings();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _requestLocationPermission();
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -86,12 +148,14 @@ class _OnboardingViewState extends State<OnboardingView> {
                     height: 50,
                   )
                       : IconButton(
-                      onPressed: () {
-                        _controller.previousPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn);
-                      },
-                      icon: const Icon(Icons.arrow_back)),
+                    onPressed: () {
+                      _controller.previousPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn,
+                      );
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
                   index == 3.0
                       ? const SizedBox(
                     height: 50,
@@ -99,14 +163,17 @@ class _OnboardingViewState extends State<OnboardingView> {
                       : TextButton(
                     onPressed: () {
                       _controller.animateToPage(
-                          4,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn);
+                        4,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn,
+                      );
                     },
-                    child: const CustomText(text: 'Skip',
+                    child: const CustomText(
+                      text: 'Skip',
                       fontSize: 16,
                       textColor: AppConstants.blackTextColor,
-                      textFontWeight: FontWeight.w500,),
+                      textFontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
@@ -114,8 +181,9 @@ class _OnboardingViewState extends State<OnboardingView> {
                 child: PageView(
                   controller: _controller,
                   onPageChanged: (currentPageIndex) {
-                    index = currentPageIndex;
-                    setState(() {});
+                    setState(() {
+                      index = currentPageIndex;
+                    });
                   },
                   children: [
                     CustomOnboarding(
@@ -129,32 +197,27 @@ class _OnboardingViewState extends State<OnboardingView> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // SizedBox(height: 100,),
                         Center(
-                            child: Image.asset(
-                              'assets/images/onboarding3.jpeg',
-                              height: 300,
-                              width: 300,
-                            )),
-                         const SizedBox(
+                          child: Image.asset(
+                            'assets/images/onboarding3.jpeg',
+                            height: 300,
+                            width: 300,
+                          ),
+                        ),
+                        const SizedBox(
                           height: 60,
                         ),
                         Center(
                           child: CustomButton(
-                              childText: 'Get Started',
-                              height: 60,
-                              width: 230,
-                              textSize: 20,
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) =>
-                                      const CustomPermissionDialoge(
-                                        permissionText:
-                                        'Allow TapToSafety To Access the device’s location?',
-                                      ),
-                                );
-                              }),
+                            childText: 'Get Started',
+                            height: 60,
+                            width: 230,
+                            textSize: 20,
+                            onPressed: (){
+                              _controller.animateToPage(4 ,duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeIn);
+                            }
+                          ),
                         ),
                       ],
                     ),
@@ -173,13 +236,19 @@ class _OnboardingViewState extends State<OnboardingView> {
                           ),
                           Center(
                             child: CustomButton(
-                                childText: 'Sign Up',
-                                height: 60,
-                                width: 230,
-                                textSize: 20,
-                                onPressed: () {
-                                  NavigationHelper.push(SignUpView(), context);
-                                }),
+                              childText: 'Sign Up',
+                              height: 60,
+                              width: 230,
+                              textSize: 20,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SignUpView(),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                           const SizedBox(height: 20,),
                           Row(
@@ -192,35 +261,23 @@ class _OnboardingViewState extends State<OnboardingView> {
                                 textFontWeight: FontWeight.w500,
                               ),
                               GestureDetector(
-                                  onTap: () {
-                                    NavigationHelper.push(LoginView(), context);
-                                  },
-                                  child: const CustomText(
-                                    text: 'Login',
-                                    fontSize: 16,
-                                    textColor: AppConstants.secondaryColor,
-                                    textFontWeight: FontWeight.bold,
-                                  )),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginView(),
+                                    ),
+                                  );
+                                },
+                                child: const CustomText(
+                                  text: 'Login',
+                                  fontSize: 16,
+                                  textColor: AppConstants.secondaryColor,
+                                  textFontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
                           ),
-
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     AppConstants.google,
-                          //     const SizedBox(
-                          //       width: 20,
-                          //     ),
-                          //     AppConstants.facebook,
-                          //     const SizedBox(
-                          //       width: 20,
-                          //     ),
-                          //     AppConstants.instagram,
-                          //   ],
-                          // ),
-                          // const SizedBox(
-                          //   height: 30,
-                          // ),
                         ],
                       ),
                     ),
@@ -239,7 +296,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                   size: const Size.square(12.0),
                   activeSize: const Size(20.0, 12.0),
                   activeShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
                 ),
               ),
             ],

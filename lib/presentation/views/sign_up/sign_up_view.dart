@@ -2,16 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:tap_to_safety/constants/app_constants.dart';
-
+import 'package:tap_to_safety/helpers.dart';
 import 'package:tap_to_safety/presentation/elements/custom_button.dart';
-
 import '../../../infrasturcture/models/user_model.dart';
 import '../../../infrasturcture/services/auth_services.dart';
 import '../../../infrasturcture/services/user_services.dart';
 import '../../elements/custom_text_field.dart';
-
-
-
+import '../bottom_navigation_bar/bottom_navigation_bar_view.dart';
 class SignUpView extends StatefulWidget {
   SignUpView({Key? key}) : super(key: key);
 
@@ -22,19 +19,20 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController name_controller = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
-  final TextEditingController phone_controller = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
 
-  final TextEditingController email_controller = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
-  final TextEditingController password_controller = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  final TextEditingController confirm_password_controller = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   final UserServices _userServices = UserServices();
 
   bool isLoading = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +56,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 CustomTextField(
                   textInputType: TextInputType.name,
-                  controller: name_controller,
+                  controller: nameController,
                   ImagePath: 'assets/images/name.png',
                   LabelText: 'Full Name', isPasswordField: false,
                   validator: (val) {
@@ -74,7 +72,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 CustomTextField(
                   textInputType: TextInputType.emailAddress,
-                  controller: email_controller,
+                  controller: emailController,
                   isPasswordField: false,
                   ImagePath: 'assets/images/email.png',
                   LabelText: 'Email',
@@ -91,7 +89,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 CustomTextField(
                   textInputType: TextInputType.phone,
-                  controller: phone_controller,
+                  controller: phoneController,
                   ImagePath: 'assets/images/phone.png',
                   LabelText: 'Phone', isPasswordField: false,
                   validator: (val) {
@@ -104,13 +102,13 @@ class _SignUpViewState extends State<SignUpView> {
                     }
                   },
                 ),
-                 const SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 CustomTextField(
                   textInputType: TextInputType.text,
                   isPasswordField: true,
-                  controller: password_controller,
+                  controller: passwordController,
                   ImagePath: 'assets/images/password.png', LabelText: 'Password',
                   validator: (val) {
                     if (val.isEmpty) {
@@ -123,20 +121,20 @@ class _SignUpViewState extends State<SignUpView> {
                   },
 
                 ),
-                 const SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 CustomTextField(
                   textInputType: TextInputType.text,
                   isPasswordField: true,
-                  controller: confirm_password_controller,
+                  controller: confirmPasswordController,
                   ImagePath: 'assets/images/password.png',
                   LabelText: 'Confirm Password',
                   validator: (val) {
                     if (val.isEmpty) {
                       return 'Confirm your Password!';
-                    } else if (confirm_password_controller.text !=
-                        password_controller.text) {
+                    } else if (confirmPasswordController.text !=
+                        passwordController.text) {
                       return 'Password dose not match';
                     } else {
                       return null;
@@ -156,42 +154,44 @@ class _SignUpViewState extends State<SignUpView> {
                       setLoadingTrue();
                       AuthServices()
                           .signUp(
-                          email: email_controller.text,
-                          password: password_controller.text)
-                      .then((UserCredential userCredential) {
+                          email: emailController.text,
+                          password: passwordController.text)
+                          .then((UserCredential userCredential) {
                         User? user = userCredential.user;
                         if (user != null){
                           UserModel userModel = UserModel(
                             uid: user.uid,
-                            fullName: name_controller.text,
-                            email: email_controller.text,
-                            phone: phone_controller.text,
+                            fullName: nameController.text,
+                            email: emailController.text,
+                            phone: phoneController.text,
+
+
                           );
                           _userServices.addUser(userModel);
                         }
                       })
 
                           .then((value) {
-                            setLoadingFalse();
+                        setLoadingFalse();
                         showDialog(
                             context: context,
                             builder: (context) {
-                              name_controller.clear();
-                              email_controller.clear();
-                              phone_controller.clear();
-                              password_controller.clear();
-                              confirm_password_controller.clear();
+                              nameController.clear();
+                              emailController.clear();
+                              phoneController.clear();
+                              passwordController.clear();
+                              confirmPasswordController.clear();
                               FocusManager.instance.primaryFocus!.unfocus();
                               return AlertDialog(
                                 title: const Text("Message!"),
-                                content: const Text("SignUp successfully"),
+                                content:  const Text("SignUp successfully"),
                                 actions: [
                                   ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: AppConstants.primaryColor,
                                       ),
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        NavigationHelper.push(BottomNavigationView(), context);
                                       },
                                       child: const Text("Okay"))
                                 ],
@@ -201,11 +201,11 @@ class _SignUpViewState extends State<SignUpView> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              name_controller.clear();
-                              email_controller.clear();
-                              phone_controller.clear();
-                              password_controller.clear();
-                              confirm_password_controller.clear();
+                              nameController.clear();
+                              emailController.clear();
+                              phoneController.clear();
+                              passwordController.clear();
+                              confirmPasswordController.clear();
                               return AlertDialog(
                                 title: const Text("Alert!"),
                                 content: Text(error.toString()),
@@ -228,27 +228,6 @@ class _SignUpViewState extends State<SignUpView> {
                 const SizedBox(
                   height: 10,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     CustomText(
-                //       text: 'Already have an account? ',
-                //       fontSize: 16,
-                //       textColor: AppConstants.blackTextColor,
-                //       textFontWeight: FontWeight.w500,
-                //     ),
-                //     GestureDetector(
-                //         onTap: () {
-                //           NavigationHelper.push(LoginView(), context);
-                //         },
-                //         child: CustomText(
-                //           text: 'Login',
-                //           fontSize: 16,
-                //           textColor: AppConstants.secondaryColor,
-                //           textFontWeight: FontWeight.bold,
-                //         )),
-                //   ],
-                // )
               ],
             ),
           ),

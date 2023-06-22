@@ -23,7 +23,7 @@ class _ViewContactsViewState extends State<ViewContactsView> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             NavigationHelper.push(const BottomNavigationView(), context);
           },
           child: const Icon(
@@ -67,37 +67,74 @@ class _ViewContactsViewState extends State<ViewContactsView> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final contacts = snapshot.data!.docs;
+
+                    // Adding default helplines as contacts
+                    // final defaultHelplines = [
+                    //   {'name': 'Rescue Helpline', 'phone': '1122'},
+                    //   {'name': 'Edhi Ambulance Helpline', 'phone': '115'},
+                    //   {'name': 'Rangers Helpline', 'phone': '1101'},
+                    //   {'name': 'Police Madadgar Helpline', 'phone': '15'},
+                    //   {'name': 'Fire Brigade Helpline', 'phone': '16'},
+                    // ];
+
                     return Column(
-                      children: contacts.map((contactDoc) {
-                        final contactData =
-                            contactDoc.data() as Map<String, dynamic>;
-                        final name = contactData['name'] ?? '';
-                        final phone = contactData['phone'] ?? '';
-                        return GestureDetector(
-                          onTap: () {
-                            NavigationHelper.push(
-                              EditContactsView(
-                                name: name,
-                                phone: phone,
-                                contactId: contactDoc.id,
-                              ),
-                              context,
-                            );
-                          },
-                          child: Column(
-                            children: [
-                              ViewContactsTile(
-                                  titleText: name, subTitleText: phone),
-                              const Divider(
-                                color: AppConstants.primaryColor,
-                                height: 5,
-                                indent: 20,
-                                endIndent: 20,
-                              ),
-                            ],
+                      children: [
+                        // for (final helpline in defaultHelplines)
+                        //   GestureDetector(
+                        //     onTap: () {
+                        //
+                        //     },
+                        //     child: Column(
+                        //       children: [
+                        //         ViewContactsTile(
+                        //           titleText: helpline['name']!,
+                        //           subTitleText: helpline['phone']!,
+                        //         ),
+                        //         const Divider(
+                        //           color: AppConstants.primaryColor,
+                        //           height: 5,
+                        //           indent: 20,
+                        //           endIndent: 20,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        for (final contactDoc in contacts)
+                          GestureDetector(
+                            onTap: () {
+                              final contactData =
+                              contactDoc.data() as Map<String, dynamic>;
+                              final name =
+                                  contactData['name'] as String? ?? '';
+                              final phone =
+                                  contactData['phone'] as String? ?? '';
+                              NavigationHelper.push(
+                                EditContactsView(
+                                  name: name,
+                                  phone: phone,
+                                  contactId: contactDoc.id,
+                                ),
+                                context,
+                              );
+                            },
+                            child: Column(
+                              children: [
+                                ViewContactsTile(
+                                  titleText:
+                                  contactDoc['name'] as String? ?? '',
+                                  subTitleText:
+                                  contactDoc['phone'] as String? ?? '',
+                                ),
+                                const Divider(
+                                  color: AppConstants.primaryColor,
+                                  height: 5,
+                                  indent: 20,
+                                  endIndent: 20,
+                                ),
+                              ],
+                            ),
                           ),
-                        );
-                      }).toList(),
+                      ],
                     );
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
